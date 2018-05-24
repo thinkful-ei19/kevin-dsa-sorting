@@ -47,4 +47,59 @@ function mergeSort(array) {
   return mergeSort(left, right, array);
 };
 
-console.log(mergeSort(dataSet));
+function insertionSort(array) {
+
+  for(var i = 1; i < array.length; i++) {
+    var temp = array[i];
+    for(var j = i - 1; j >= 0 && array[j] > temp; j--) {
+      array[j+1] = array[j];
+    }
+    array[j+1] = temp;
+  }
+  return array;
+
+  // for (let i = 1; i < array.length; i++) {
+  //   let temp = array[i];
+  //   for (let j = i - 1; j >= 0 && array[j] > temp; j--) {
+  //     array[j+1] = array[j];
+  //   }
+  //   array[j+1] = temp;
+  // }
+  // return array;
+}
+
+function bucketSort(array, bucketSize, minVal, maxVal) {
+  const bucketCount = Math.floor((maxVal - minVal) / bucketSize) + 1;
+  const allBuckets = new Array(bucketCount);
+
+  array.forEach(function(currentVal) {
+    if (currentVal < minVal) {
+      minVal = currentVal;
+    } else if (currentVal > maxVal) {
+      maxVal = currentVal;
+    }
+  });
+
+  for (let i = 0; i < allBuckets.length; i++) {
+    allBuckets[i] = [];
+  };
+
+  array.forEach(function (currentVal) {
+    allBuckets[Math.floor((currentVal - minVal) / bucketSize)].push(currentVal);
+  });
+
+  array.length = 0;
+
+  allBuckets.forEach(function(bucket) {
+    insertionSort(bucket);
+    bucket.forEach(function (element) {
+      array.push(element)
+    });
+  });
+  return array;
+}
+
+// console.log(quickSort(dataSet));
+// console.log(mergeSort(dataSet));
+console.log(bucketSort(dataSet, 10, 1, 99));
+
